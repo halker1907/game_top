@@ -1,6 +1,7 @@
 import shop2
 import hero
 import os
+import hhh
 
 def start_new_game():
 	"""
@@ -13,7 +14,7 @@ def start_new_game():
 	"""
 	#создаем перса
 	print("запустили новую игру")
-	player = ("безымянный", 100, 500, 0)
+	player = hhh.make_hero()
 
 	is_game = True
 	while is_game:
@@ -39,6 +40,10 @@ def start_new_game():
 			players = shop2.visit_shop(player)
 		elif answer == "0":
 			is_game = False
+		elif answer == "1907":
+			print("ВЫ НАШЛИ ПОСХАЛКУ!!!!!!!!")
+			print("это день моего рождения")
+			input("b")
 
 
 start_new_game()
