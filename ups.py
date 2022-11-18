@@ -16,13 +16,13 @@ def make_hero(
 	inventory=None
 ):
 	
-	"""
-	print("имя", hero[0])
-    print("жизни сейчас и потом", hero[1])
+	"""hero[0])
+    print("жизни 
+	print("имя", сейчас и потом", hero[1])
     print("жизни потом", hero[2])
-	print("опыт сейчас и потом", hero[3])
-    print("опыт потом", hero[4])
-    print("атака сила", hero[5])
+	print("опыт сетом", hero[4])
+    print("атака сйчас и потом", hero[3])
+    print("опыт поила", hero[5])
     print("защита", hero[6)
     print("деньги", hero[7])
     print("зелья", hero[8])
@@ -50,30 +50,47 @@ def make_hero(
 		defence,
 		money,
 		level,
-		luck,
+		luck
 	]
 
 
 def show_hero(hero):
 	print("имя", hero[0])
-    print("жизни сейчас", hero[1])
-    print("жизни потом", hero[2])
+	print("жизни ", hero[1], "из", hero[2])
 	print("опыт сейчас", hero[3], "/", hero[4])
-    print("опыт потом", hero[4])
-    print("атака сила", hero[5])
-    print("защита", hero[6])
-    print("деньги", hero[7])
-    print("левел", hero[8])
-    print("удача", hero[9])
-    print("")
+	print("атака сила", hero[5])
+	print("защита", hero[6])
+	print("деньги", hero[7])
+	print("левел", hero[8])
+	print("удача", hero[9])
+	print("инвентарь", hero[10])
+	print("")
+
+
+def levelup(hero: list):
+	if hero[4] >= hero[5]:
+		hero[3] += 1
+		hero[5] = hero[3] * 100
+		print(f"{hero[0]} получил {hero[3]} уровень\n")
+
+
+def buy(hero, price):
+	"""
+	[9] money - деньги
+	[10] inventory - cписок предметов
+"""
+	if hero[7] >= price:
+		hero[7] -= price
+		hero[10].append("зелья")
+		print(f"{hero[0]} купил зелье за {price} менет")
+	else:
+		print(f"у {hero[0]} нет столько монет")
+
+def consume_item(hero: list, item: str):
+
+
 
 p1 = make_hero()
-show_hero(p1)
 p2 = make_hero()
+show_hero(p1)
 show_hero(p2)
-p3 = make_hero()
-show_hero(p3)
-
-show_hero()
-show_hero()
-show_hero()
