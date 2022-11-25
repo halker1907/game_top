@@ -1,3 +1,4 @@
+import os
 from random import choice,randint
 
 first_name = ("жиран","дрын","брысь","жлык","крикун")
@@ -72,24 +73,25 @@ def show_hero(hero):
 	print("")
 
 
+
 def levelup(hero: list):
-	if hero[3] >= hero[4]:
-		hero[3] += 1
-		hero[4] = hero[3] * 100
+	while hero[3] >= hero[4]:
+		hero[8] += 1
+		hero[4] = hero[8] * 100
 		print(f"{hero[0]} получил {hero[3]} уровень\n")
 
 
 def buy(hero, price,item):
 	if hero[7] >= price:
 		hero[7] -= price
-		hero[10].append({item})
+		hero[10].append(item)
 		print(f"{hero[0]} купил {item} за {price} менет")
 	else:
 		print(f"у {hero[0]} нет столько монет")
 
 
 def consume_item(hero: list, index: str):
-	if index <= len(hero[10]) - 1:
+	if index <= len(hero[10]) - 1 and index > -1:
 		print(f"{hero[0]} употрибил {hero[10][index]}")
 		if hero[10][index] == "зелье":
 			hero[1] += 10
@@ -122,8 +124,14 @@ def play_dice(hero, bet):
 		else:
 			print(f"у {hero[0]} нет столько денег")
 	else:
-		print("такая ставка невозможна")
+		print("такая ставка невозможна,стаки начинаются от одной монеты!")
 
+def combat_turn(attacker,defender):
+	if attacker[1] > 0:
+		damage = attacker[5]
+		defender[1] -= damage
+		print(f"{attacker[0]} ударил {defender[0]} на {damage} урона")
+		os.system("cls")
 
 def fight(hero):
 	"""
@@ -134,6 +142,32 @@ def fight(hero):
 	После боя забрать опыт деньги и предметы
 	Проверить лэвел ап
 	Можно ли выпить зелье в бою?
+
+	"""
+	enemy = make_hero()
+	os.system("cls")
+	while hero[1] > 0 and enemy[1] > 0:
+		combat_turn(hero,enemy)
+		combat_turn(enemy,hero)
+		print("")
+		show_hero(hero)
+		show_hero(enemy)
+		input("\nНажмите энтер чтобы сделать следующий ход")
+	print("конец боя")
+
+	if hero[1] > 0 and enemy[1] <= 0:
+		print(f"{hero[0]} победил")
+	elif  hero[1] <= 0 and enemy[1] > 0:
+		print(f"{enemy[0]} победил")
+	else:
+		print(f"{hero[0]} и {enemy[0]} пали в бою")
+
+
+def get_award(winner, loser):
+	"""
+	победитель должен получить все предметы опыт и деньги
+	если победитель получил достаточно опыта то повышается уровень
+	
 
 	"""
 	pass
