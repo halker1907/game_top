@@ -78,7 +78,7 @@ def levelup(hero: list):
 	while hero[3] >= hero[4]:
 		hero[8] += 1
 		hero[4] = hero[8] * 100
-		print(f"{hero[0]} получил {hero[3]} уровень\n")
+		print(f"{hero[0]} получил {hero[8]} уровень\n")
 
 
 def buy(hero, price,item):
@@ -144,30 +144,33 @@ def fight(hero):
 	Можно ли выпить зелье в бою?
 
 	"""
-	enemy = make_hero()
-	os.system("cls")
+	enemy = make_hero(money=100, xp_now=50000, inventory=("меч", "щит"))
 	while hero[1] > 0 and enemy[1] > 0:
+		os.system("cls")
 		combat_turn(hero,enemy)
 		combat_turn(enemy,hero)
 		print("")
 		show_hero(hero)
 		show_hero(enemy)
 		input("\nНажмите энтер чтобы сделать следующий ход")
-	print("конец боя")
+	combat_result(hero, enemy)
+	os.system("cls")
 
+
+def combat_result(hero, enemy):
+	os.system("cls")
 	if hero[1] > 0 and enemy[1] <= 0:
-		print(f"{hero[0]} победил")
+		print(f"{hero[0]} победил и в награду получает")
+		print(enemy[3], "опыта")
+		hero[3] += enemy[3]
+		print(enemy[7], "денег")
+		hero[7] += enemy[7]
+		print("и забирает все предметы ", end="")
+		for item in enemy[10]:
+			print(item, end=", ")
+		hero[10] += enemy[10]
+		levelup(hero)
 	elif  hero[1] <= 0 and enemy[1] > 0:
 		print(f"{enemy[0]} победил")
 	else:
 		print(f"{hero[0]} и {enemy[0]} пали в бою")
-
-
-def get_award(winner, loser):
-	"""
-	победитель должен получить все предметы опыт и деньги
-	если победитель получил достаточно опыта то повышается уровень
-	
-
-	"""
-	pass
