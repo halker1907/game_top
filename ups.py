@@ -78,7 +78,7 @@ def levelup(hero: list):
 	while hero[3] >= hero[4]:
 		hero[8] += 1
 		hero[4] = hero[8] * 100
-		print(f"{hero[0]} получил {hero[8]} уровень\n")
+		print(f"\n{hero[0]} получил {hero[8]} уровень\n")
 
 
 def buy(hero, price,item):
@@ -126,12 +126,14 @@ def play_dice(hero, bet):
 	else:
 		print("такая ставка невозможна,стаки начинаются от одной монеты!")
 
+
 def combat_turn(attacker,defender):
 	if attacker[1] > 0:
 		damage = attacker[5]
 		defender[1] -= damage
 		print(f"{attacker[0]} ударил {defender[0]} на {damage} урона")
 		os.system("cls")
+
 
 def fight(hero):
 	"""
@@ -144,7 +146,7 @@ def fight(hero):
 	Можно ли выпить зелье в бою?
 
 	"""
-	enemy = make_hero(money=100, xp_now=50000, inventory=("меч", "щит"))
+	enemy = make_hero(hp_now=1, money=100, xp_now=50000, inventory=("меч", "щит"))
 	while hero[1] > 0 and enemy[1] > 0:
 		os.system("cls")
 		combat_turn(hero,enemy)
@@ -174,3 +176,58 @@ def combat_result(hero, enemy):
 		print(f"{enemy[0]} победил")
 	else:
 		print(f"{hero[0]} и {enemy[0]} пали в бою")
+
+
+def choose_option(hero, text, options):
+	"""
+	описание ситуации где происходит выбор
+	принимает список возможных вариантов
+	спросить пользователя номер варианта
+	проверяет есть ли вариант пользователя в возможных вариантах 
+	если есть возвращает вариант пользователя
+	"""
+	show_hero(hero)
+	print(text)
+	for num, option in enumerate(options):
+		print(f"{num}. {option}")
+
+	option = input("\nВведите номер варианта и нажмите энтер: ")
+	try:
+		option = int(option)
+	except:
+		print("ошибка! введите целое неотрицательное число")
+	else:
+		if option < len(options) and option > -1:
+			return option
+		else:
+			print("такой выбор невозможен")
+
+
+def visit_hub(hero):
+	text = "герой приехал к камню отсюда идут несколько дорог"
+	options = [
+		"купить зелье ",
+		"употрибить предмет в 1 инвентаре ",
+		"дрaться с разбойниками ",
+		"сыграть в кости на 10 монет ",
+	]
+	option = choose_option(hero, text, options)
+	os.system("cls")
+	if option == 0:
+		buy(hero, 10, "зелья")
+	elif option == 1:
+		consume_item(hero, 0)
+	elif option ==2:
+		fight(hero)
+	elif option == 3:
+		play_dice(hero, 50)
+	else:
+		print("нет такого варианта")
+	input("\n нажмите энтер для продолжения")
+
+
+def visit_shop(hero):
+	"""
+	
+	"""
+	pass
