@@ -61,15 +61,15 @@ def make_hero(
 
 
 def show_hero(hero):
-	print("имя", hero[0])
-	print("жизни ", hero[1], "из", hero[2])
-	print("опыт сейчас", hero[3], "/", hero[4])
-	print("атака сила", hero[5])
-	print("защита", hero[6])
-	print("деньги", hero[7])
-	print("левел", hero[8])
-	print("удача", hero[9])
-	print("инвентарь", hero[10])
+	print("имя:", hero[0])
+	print("жизни: ", hero[1], "из", hero[2])
+	print("опыт сейчас:", hero[3], "/", hero[4])
+	print("атака сила:", hero[5])
+	print("защита:", hero[6])
+	print("деньги:", hero[7])
+	print("левел:", hero[8])
+	print("удача:", hero[9])
+	print("инвентарь:", hero[10])
 	print("")
 
 
@@ -80,7 +80,8 @@ def levelup(hero: list):
 		hero[4] = hero[8] * 100
 		print(f"\n{hero[0]} получил {hero[8]} уровень\n")
 
-def buy(hero, price,item):
+
+def buy(hero, price, item):
 	os.system("cls")
 	if hero[7] >= price:
 		hero[7] -= price
@@ -135,11 +136,12 @@ def play_dice(hero, bet):
 			print("такая ставка невозможна,стаки начинаются от одной монеты!")
 	input("нажмите энтер чтобы продолжить")
 
-def combat_turn(attacker,defender):
+
+def combat_turn(attacker, defender):
 	if attacker[1] > 0:
 		damage = attacker[5]
 		defender[1] -= damage
-		print(f"{attacker[0]} ударил {defender[0]} на {damage} урона")
+		print(f"{attacker[0]} ударил {defender[0]} на {damage} урон")
 		os.system("cls")
 
 
@@ -154,15 +156,21 @@ def fight(hero):
 	Можно ли выпить зелье в бою?
 
 	"""
-	enemy = make_hero(hp_now=1, money=100, xp_now=50, inventory=("меч", "щит"))
+	enemy = make_hero(hp_now=2, money=100, xp_now=50, inventory=("меч", "щит"))
 	while hero[1] > 0 and enemy[1] > 0:
-		os.system("cls")
-		combat_turn(hero,enemy)
-		combat_turn(enemy,hero)
-		print("")
-		show_hero(hero)
-		show_hero(enemy)
-		input("\nНажмите энтер чтобы сделать следующий ход")
+		options = [
+			"ударить врага",
+			"использовать предмет",
+		]
+		option = choose_option(hero, "", options)
+		if option == 0:
+			combat_turn(hero, enemy)
+		elif option == 1:
+			index = choose_option(hero, hero[10], options)
+			if index is not None:
+				consume_item(hero, index)
+		combat_turn(enemy, hero)
+
 	combat_result(hero, enemy)
 	os.system("cls")
 
@@ -254,7 +262,8 @@ def visit_shop(hero):
 		return visit_hub(hero)
 	else:
 		print("нет такого варианта")
-	input("\n нажмите энтер для продолжения")
+		input("\n нажмите энтер для продолжения")
+		return visit_shop(hero)
 
 
 def visit_inn(hero):
@@ -284,12 +293,13 @@ def visit_arena(hero):
 	option = choose_option(hero, text, options)
 	os.system("cls")
 	if option == 0:
-		return fight(hero)
+		fight(hero)
 	elif option == 1:
 		return visit_hub(hero)
 	else:
 		print("нет такого варианта")
-	return visit_arena(hero)
+		input("\n нажмите энтер для продолжения")
+		return visit_arena(hero)
 
 
 def visit_shop_weapon():
