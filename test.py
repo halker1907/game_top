@@ -1,6 +1,16 @@
-from ups import*
+from fps import*
 
-player = make_hero(name="вася", inventory=["зелье", "зелье здоровья", "зелье силы"], hp_now=40)
+player = make_hero(
+	name="вася",
+	inventory=[
+		{
+			" тип": "щит",
+			" название": "меч кладенец",
+			" цена": "500",
+			" модификатор": "50"
+		} 
+	]
+	)		
 game = True
 while game:
 	visit_hub(player)

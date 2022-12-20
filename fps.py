@@ -12,6 +12,8 @@ def make_hero(
 	xp_now=10,
 	xp_next=1000,
 	attak=1,
+	weapon=None,
+	shield=None,
 	defence=0,
 	money=None,
 	level=1,
@@ -29,23 +31,44 @@ def make_hero(
 	if money is None:
 		money = randint(0,100)
 
+	if not weapon:
+		weapon = {
+			" тип": "оружие",
+			" название": "меч обыкновенный",
+			" цена": "+3",
+			" модификатор": "5"
+		}
+	if not weapon:
+		weapon = {
+			" тип": "щит",
+			" название": "щит обыкновенный",
+			" цена": "+3",
+			" модификатор": "5"
+		}
 	return {
-		"имя":name,
-		"хп сейчас":hp_now,
-		"хп максимальное":hp_max,
-		"опыт сейчас":xp_now,
-		"опыт потом":xp_next,
-		"сила аттаки":attak,
-		"защита":defence,
-		"деньги":money,
-		"уровень":level,
-		"удача":luck,
-		"инвентарь":inventory
+		"имя": name,
+		"хп сейчас": hp_now,
+		"хп максимальное": hp_max,
+		"опыт сейчас": xp_now,
+		"опыт потом": xp_next,
+		"сила аттаки": attak,
+		"защита": defence,
+		"оружие": weapon,
+		"деньги": money,
+		"уровень": level,
+		"удача": luck,
+		"инвентарь": inventory
 	}
 
+def show_item(item: dict) -> None:
+	if item:
+		print( f"{item['название']} {item['модификатор']}")
+	else:
+		print("-нет-")
+
+
 def show_hero(hero):
-	for k, v in hero.items():
-		print(f"{k}: {v}")
+	None
 
 
 def fishing(hero, item):
@@ -139,10 +162,10 @@ def play_dice(hero, bet):
 
 
 def combat_turn(attacker, defender):
-	if attacker[1] > 0:
-		damage = attacker[5]
-		defender[1] -= damage
-		print(f"{attacker[0]} ударил {defender[0]} на {damage} урон")
+	if attacker["хп сейчас"] > 0:
+		damage = attacker["сила аттаки"]
+		defender["хп сейчас"] -= damage
+		print(f'{attacker["имя"]} ударил {defender["имя"]} на {damage} урон')
 
 
 def fight(hero):
@@ -162,9 +185,10 @@ def fight(hero):
 		"использовать предмет",
 	]
 	show_hero(hero)
+	print("")
 	show_hero(enemy)
 
-	while hero["хп сейчас"] > 0 and enemy[1] > 0:
+	while hero["хп сейчас"] > 0 and enemy["хп сейчас"] > 0:
 		show_options(hero, options)
 		option = choose_option(hero, options)
 		os.system("cls")
@@ -172,10 +196,12 @@ def fight(hero):
 			combat_turn(hero, enemy)
 			combat_turn(enemy, hero)
 			show_hero(hero)
+			print("")
 			show_hero(enemy)
 		elif option == 1:
 			consume_item(hero)
 			show_hero(hero)
+			print("")
 			show_hero(enemy)
 			combat_turn(enemy, hero)
 	combat_result(hero, enemy)
@@ -185,21 +211,21 @@ def fight(hero):
 
 def combat_result(hero, enemy):
 	os.system("cls")
-	if hero["хп сейчас"] > 0 and enemy[1] <= 0:
+	if hero["хп сейчас"] > 0 and enemy["хп сейчас"] <= 0:
 		print(f'{hero["имя"]} победил и в награду получает')
-		print(enemy[3], "опыта")
-		hero["опыт сейчас"] += enemy[3]
-		print(enemy[7], "денег")
-		hero["деньги"] += enemy[7]
+		print(enemy["опыт сейчас"], "опыта")
+		hero["опыт сейчас"] += enemy["опыт сейчас"]
+		print(enemy["деньги"], "денег")
+		hero["деньги"] += enemy["деньги"]
 		print("и забирает все предметы: ", end="")
-		for item in enemy[10]:
+		for item in enemy["инвентарь"]:
 			print(item, end=", ")
-		hero["инвентарь"] += enemy[10]
+		hero["инвентарь"] += enemy["инвентарь"]
 		levelup(hero)
-	elif  hero["хп сейчас"] <= 0 and enemy[1] > 0:
-		print(f"{enemy[0]} победил")
+	elif  hero["хп сейчас"] <= 0 and enemy["хп сейчас"] > 0:
+		print(f'{enemy["имя"]} победил')
 	else:
-		print(f'{hero["имя"]} и {enemy[0]} пали в бою')
+		print(f'{hero["имя"]} и {enemy["имя"]} пали в бою')
 	input("\nнажмите энтер для продолжения")
 
 
@@ -239,6 +265,7 @@ def visit_hub(hero):
 	]
 	os.system("cls")
 	show_hero(hero)
+	print("")
 	print(text)
 	show_options(hero, options)
 	option = choose_option(hero, options)
@@ -269,6 +296,7 @@ def visit_shop(hero):
 	]
 	os.system("cls")
 	show_hero(hero)
+	print("")
 	print(text)
 	show_options(hero, options)
 	option = choose_option(hero, options)
@@ -298,6 +326,7 @@ def visit_inn(hero):
 	]
 	os.system("cls")
 	show_hero(hero)
+	print("")
 	print(text)
 	show_options(hero, options)
 	option = choose_option(hero, options)
@@ -321,6 +350,7 @@ def visit_arena(hero):
 	]
 	os.system("cls")
 	show_hero(hero)
+	print("")
 	print(text)
 	show_options(hero, options)
 	option = choose_option(hero, options)
@@ -345,6 +375,7 @@ def visit_fishing(hero):
 	]
 	os.system("cls")
 	show_hero(hero)
+	print("")
 	print(text)
 	show_options(hero, options)
 	option = choose_option(hero, options)
