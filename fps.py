@@ -31,19 +31,14 @@ def make_hero(
 	if money is None:
 		money = randint(0,100)
 
+
 	if not weapon:
 		weapon = {
-			" тип": "оружие",
-			" название": "меч обыкновенный",
-			" цена": "+3",
-			" модификатор": "5"
-		}
-	if not weapon:
-		weapon = {
-			" тип": "щит",
-			" название": "щит обыкновенный",
-			" цена": "+3",
-			" модификатор": "5"
+			"тип": "меч",
+			"название": "меч обыкновенный",
+			"свойство": "атака",
+			"цена": 3,
+			"модификатор": 5
 		}
 	return {
 		"имя": name,
@@ -51,7 +46,7 @@ def make_hero(
 		"хп максимальное": hp_max,
 		"опыт сейчас": xp_now,
 		"опыт потом": xp_next,
-		"сила аттаки": attak,
+		"атака": attak,
 		"защита": defence,
 		"оружие": weapon,
 		"деньги": money,
@@ -62,13 +57,44 @@ def make_hero(
 
 def show_item(item: dict) -> None:
 	if item:
-		print( f"{item['название']} {item['модификатор']}")
+		if item['модификатор'] >= 0:
+			print( f"{item['название']} +{item['модификатор']} {item['свойство']}")
+		else:
+			print( f"{item['название']} {item['модификатор']} {item['свойство']}")
 	else:
 		print("-нет-")
 
+def recalculate_stats(hero):
+	if hero["оружие"]:
+		hero["атака"] += hero["оружие"]["модификатор"]
+	if hero["защита"]: 
+		hero["щит"] += hero["защита"]["модификатор"]
+		
+def equip_item(hero):
+	pass
+
+
 
 def show_hero(hero):
-	None
+	print("имя:", hero["имя"])
+	print("жизни: ", hero["хп сейчас"], "из", hero["хп максимальное"])
+	print("опыт сейчас:", hero["опыт сейчас"], "/", hero["опыт потом"])
+	print("оружие:", hero["атака"])
+	show_item(hero["оружие"])
+	print("щит:", hero["защита"])
+	show_item(hero["защита"])
+	print("деньги:", hero["деньги"])
+	print("левел:", hero["уровень"])
+	print("удача:", hero["удача"])
+	show_inventory(hero["инвентарь"])
+	print("")
+
+
+def show_inventory(inventory):
+	print("предметы:")
+	for item in inventory:
+		show_item(item)
+
 
 
 def fishing(hero, item):
